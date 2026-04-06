@@ -1,1 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: montecarlo-odds
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: montecarlo-odds
+              image: ghcr.io/dydi22/ds5220-montecarlo-odds:latest
+              imagePullPolicy: Always
+              env:
+                - name: ODDS_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: odds-api-secret
+                      key: API_KEY
+                - name: S3_BUCKET
+                  value: "ds5220-data-project-2"
+                - name: SPORT_KEY
+                  value: "tennis_atp_monte_carlo_masters"
+                - name: ODDS_REGIONS
+                  value: "uk"
+                - name: S3_DATA_KEY
+                  value: "data.csv"
+                - name: S3_PLOT_KEY
+                  value: "plot.png"
+
 
