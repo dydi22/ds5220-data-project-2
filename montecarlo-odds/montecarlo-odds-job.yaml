@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: montecarlo-odds
+  name: masters-outrights
 spec:
   schedule: "0 * * * *"
   concurrencyPolicy: Forbid
@@ -13,8 +13,8 @@ spec:
         spec:
           restartPolicy: OnFailure
           containers:
-            - name: montecarlo-odds
-              image: ghcr.io/dydi22/ds5220-montecarlo-odds:latest
+            - name: masters-outrights
+              image: ghcr.io/dydi22/ds5220-masters-outrights:latest
               imagePullPolicy: Always
               env:
                 - name: ODDS_API_KEY
@@ -25,12 +25,10 @@ spec:
                 - name: S3_BUCKET
                   value: "ds5220-data-project-2"
                 - name: SPORT_KEY
-                  value: "tennis_atp_monte_carlo_masters"
+                  value: "golf_masters_tournament_winner"
                 - name: ODDS_REGIONS
                   value: "uk"
                 - name: S3_DATA_KEY
                   value: "data.csv"
                 - name: S3_PLOT_KEY
                   value: "plot.png"
-
-
