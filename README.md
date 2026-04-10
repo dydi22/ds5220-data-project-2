@@ -37,18 +37,22 @@ The plot is publicly accessible via an S3 static website URL.
 ---
 
 ## Repository Structure
-montecarlo-odds/
-├── Dockerfile
-├── app.py
-├── montecarlo-odds-job.yaml
-├── requirements.txt
-Other files:
+
+```text
+.
 ├── README.md
 ├── .gitignore
+├── iss-altitude.png
 ├── iss-job.yaml
 ├── simple-job.yaml
-├── iss-altitude.png
+├── iss-reboost/
+└── montecarlo-odds/
+    ├── Dockerfile
+    ├── app.py
+    ├── montecarlo-odds-job.yaml
+    └── requirements.txt
 
+```
 
 ---
 
