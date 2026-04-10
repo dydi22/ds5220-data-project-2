@@ -1,5 +1,53 @@
 # DS5220 Data Project 2
 
+# Data Pipeline: Masters Outright Odds Tracking
+
+## Data Source
+This project uses a golf betting odds data source that tracks Masters Tournament outright odds over time. The data is collected at regular intervals, allowing me to build a time series of how betting markets change leading up to the tournament.
+
+I chose this data because it updates frequently and provides interesting insights into how probabilities shift based on new information and market activity.
+
+---
+
+## Scheduled Process
+This application is a Python-based data pipeline that runs on a schedule using a Kubernetes CronJob.
+
+At each run, the pipeline:
+1. Fetches the latest Masters outright odds from the data source  
+2. Appends the new data point to a dataset stored in AWS S3  
+3. Processes the accumulated data (at least 72 entries over time)  
+4. Generates an updated plot showing how odds change over time  
+5. Saves the plot as `plot.png` back to S3  
+
+The pipeline is containerized using Docker and deployed to Kubernetes, where the CronJob ensures it runs automatically (e.g., every hour).
+
+---
+
+## Output Data & Plot
+The output of this pipeline includes:
+- A time-series dataset of Masters outright odds stored in S3  
+- A generated visualization (`plot.png`) showing how odds change over time  
+
+The plot highlights trends, stability, and any noticeable shifts in betting odds over at least a 72-hour period. This makes it easy to observe how the market evolves leading up to the tournament.
+
+The plot is publicly accessible via an S3 static website URL.
+
+---
+
+## Tech Stack
+- Python (data collection, processing, visualization)  
+- Docker (containerization)  
+- Kubernetes CronJob (scheduling)  
+- AWS S3 (data storage and hosting)  
+
+---
+
+## Repository Contents
+- `pipeline.py` — main application logic  
+- `Dockerfile` — container configuration  
+- `requirements.txt` — Python dependencies  
+- `plot.png` — generated visualization (also stored in S3)  
+
 Create, schedule, and run a containerized data pipeline in Kubernetes.
 
 ## Overview
