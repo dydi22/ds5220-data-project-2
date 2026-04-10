@@ -10,43 +10,58 @@ I chose this data because it updates frequently and provides interesting insight
 ---
 
 ## Scheduled Process
-This application is a Python-based data pipeline that runs on a schedule using a Kubernetes CronJob.
+This application is a Python-based data pipeline located in `montecarlo-odds/app.py`, and it is scheduled using a Kubernetes CronJob defined in `montecarlo-odds/montecarlo-odds-job.yaml`.
 
-At each run, the pipeline:
+At each scheduled run, the pipeline:
 1. Fetches the latest Masters outright odds from the data source  
-2. Appends the new data point to a dataset stored in AWS S3  
-3. Processes the accumulated data (at least 72 entries over time)  
-4. Generates an updated plot showing how odds change over time  
-5. Saves the plot as `plot.png` back to S3  
+2. Processes and updates the dataset  
+3. Stores the updated data in AWS S3  
+4. Generates a visualization of the odds over time  
+5. Saves the plot as `plot.png` to S3  
 
-The pipeline is containerized using Docker and deployed to Kubernetes, where the CronJob ensures it runs automatically (e.g., every hour).
+The application is containerized using the `Dockerfile` in the `montecarlo-odds` directory, and dependencies are managed through `requirements.txt`.
+
+The CronJob ensures that this process runs automatically at a fixed interval (e.g., every hour).
 
 ---
 
 ## Output Data & Plot
 The output of this pipeline includes:
-- A time-series dataset of Masters outright odds stored in S3  
+- A time-series dataset of Masters outright odds stored in AWS S3  
 - A generated visualization (`plot.png`) showing how odds change over time  
 
-The plot highlights trends, stability, and any noticeable shifts in betting odds over at least a 72-hour period. This makes it easy to observe how the market evolves leading up to the tournament.
+The plot represents at least 72 data points (72 hours) and highlights trends, stability, and any noticeable changes in betting odds.
 
 The plot is publicly accessible via an S3 static website URL.
+
+---
+
+## Repository Structure
+montecarlo-odds/
+├── Dockerfile
+├── app.py
+├── montecarlo-odds-job.yaml
+├── requirements.txt
+Other files:
+├── README.md
+├── .gitignore
+├── iss-job.yaml
+├── simple-job.yaml
+├── iss-altitude.png
+
 
 ---
 
 ## Tech Stack
 - Python (data collection, processing, visualization)  
 - Docker (containerization)  
-- Kubernetes CronJob (scheduling)  
+- Kubernetes (CronJob scheduling)  
 - AWS S3 (data storage and hosting)  
 
 ---
 
-## Repository Contents
-- `pipeline.py` — main application logic  
-- `Dockerfile` — container configuration  
-- `requirements.txt` — Python dependencies  
-- `plot.png` — generated visualization (also stored in S3)  
+## Notes
+This project demonstrates how to build and deploy a scheduled data pipeline using cloud infrastructure, containerization, and orchestration tools. It automates data collection, storage, and visualization in a reproducible way.
 
 Create, schedule, and run a containerized data pipeline in Kubernetes.
 
